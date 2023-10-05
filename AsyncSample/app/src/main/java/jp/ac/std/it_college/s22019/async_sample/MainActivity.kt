@@ -8,6 +8,7 @@ import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.ac.std.it_college.s22019.async_sample.databinding.ActivityMainBinding
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import java.net.URL
@@ -43,7 +44,24 @@ class MainActivity : AppCompatActivity() {
         val backgroundReceiver = WeatherInfoBackgroundReceiver(url)
         val future = executorService.submit(backgroundReceiver)
         val result = future.get()
-        binding.tvWeatherDesc.text = result
+        showWeatherInfo(result)
+    }
+
+    @UiThread
+    private fun showWeatherInfo(result: String) {
+        val root = JSONObject(result)
+        val cityName = root.getString("name")
+        val coord = root.getJSONObject("coord")
+        val latitude = coord.getDouble("lat")
+        val longitude = coord.getDouble("lon")
+        val weatherArray = root.getJSONArray("weather")
+        val current = weatherArray.getJSONObject(0)
+        val weather = current.getString("description")
+        // 以下、表示処理
+        binding.tvWeatherTelop.text = getString(R.string.tv_telop, cityName)
+        binding.tvWeatherDesc.text = getString(
+            R.string.tv_desc, weather, latitude, longitude
+        )
     }
 
     private class WeatherInfoBackgroundReceiver(val urlString: String) : Callable<String> {
