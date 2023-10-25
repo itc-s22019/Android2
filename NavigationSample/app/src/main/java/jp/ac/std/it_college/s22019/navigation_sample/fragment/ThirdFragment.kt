@@ -5,35 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import jp.ac.std.it_college.s22019.navigation_sample.R
-import jp.ac.std.it_college.s22019.navigation_sample.databinding.FragmentHomeBinding
+import jp.ac.std.it_college.s22019.navigation_sample.databinding.FragmentThirdBinding
 
 /**
- * ホーム画面用のフラグメント
- * */
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+ * ３つ目の画面用フラグメント
+ */
+class ThirdFragment : Fragment() {
+    private var _binding: FragmentThirdBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentThirdBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.homeToNext.setOnClickListener { toNext() }
+        val choice = arguments?.getInt("choice", 0)
+        binding.display.text = "<$choice>"
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    private fun toNext() {
-        findNavController().navigate(R.id.action_homeFragment_to_secondFragment)
     }
 }
