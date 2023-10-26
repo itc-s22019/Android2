@@ -27,5 +27,10 @@
         android:id="@+id/thirdFragment"
         android:name="jp.ac.std.it_college.s22019.navigation_sample.fragment.ThirdFragment"
         android:label="fragment_third"
-        tools:layout="@layout/fragment_third" />
+        tools:layout="@layout/fragment_third" >
+        <argument
+            android:name="choice"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>
